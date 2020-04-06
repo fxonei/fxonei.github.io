@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>使用Docker搭建AdGuard Home无广告防跟踪的开源DNS</title>
+    <link href="/2020/04/06/%E4%BD%BF%E7%94%A8Docker%E6%90%AD%E5%BB%BAAdGuard%20Home%E6%97%A0%E5%B9%BF%E5%91%8A%E9%98%B2%E8%B7%9F%E8%B8%AA%E7%9A%84%E5%BC%80%E6%BA%90DNS/"/>
+    <url>/2020/04/06/%E4%BD%BF%E7%94%A8Docker%E6%90%AD%E5%BB%BAAdGuard%20Home%E6%97%A0%E5%B9%BF%E5%91%8A%E9%98%B2%E8%B7%9F%E8%B8%AA%E7%9A%84%E5%BC%80%E6%BA%90DNS/</url>
+    
+    <content type="html"><![CDATA[<p>##使用Docker搭建AdGuard Home无广告防跟踪的开源DNS<br>AdGuard Home 是一款全网广告拦截与反跟踪软件。在您将其安装完毕后，它将保护您所有家用设备，同时您不再需要安装任何客户端软件。随着物联网与连接设备的兴起，掌控您自己的整个网络环境变得越来越重要。</p><p><img src="https://cdn.adguard.com/public/Adguard/Common/adguard_home.gif" srcset="/img/loading.gif" alt="adguard_home.gif"></p><p>简单点说AdGuard Home就是一个公共DNS服务，如Google的公共DNS8.8.8.8，和DNSmasq一样AdGuard Home是开源的，可以自行搭建安装后在客户端配置使用。<br>AdGuard Home使用Golang开发，编译好了各大平台的二进制文件，因此安装非常简单，这里以CentOS 7为例，其它系统可参考官方帮助文档。</p><ul><li>AdGuard Home主要功能<br><img src="https://i.loli.net/2019/12/31/Tlr3bUOucADHKQ5.png" srcset="/img/loading.gif" alt="20191231115327.png"></li></ul><ul><li>使用Docker安装</li></ul><p>当然如果不喜欢使用docker的话也可以使用其他的系统搭建，支持windows、linux、mac os、树莓派等<br>安装docker<br>docker相信大家应该都会装吧<br>拉取镜像文件<br><code>docker pull adguard/adguardhome</code><br>创建新容器并运行AdGuard Home</p><pre><code>docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome</code></pre><p>不要忘记使用自己的数据和配置目录！</p><p>现在，您可以打开浏览器并导航到<a href="http://127.0.0.1:3000/以控制AdGuard" target="_blank" rel="noopener">http://127.0.0.1:3000/以控制AdGuard</a> Home服务。</p><ul><li>控制容器</li></ul><p>开始： docker start adguardhome<br>停止： docker stop adguardhome<br>去掉： docker rm adguardhome</p><ul><li>如何更新到较新版本</li></ul><p>从Docker Hub提取新版本<br><code>docker pull adguard/adguardhome</code></p><ul><li>停止并删除当前正在运行的容器（假设该容器名为adguardhome）：</li></ul><p><code>docker stop adguardhome</code><br><code>docker rm adguardhome</code></p><ul><li>使用新映像创建并启动容器：<pre><code>docker run --name adguardhome -v /my/own/workdir:/opt/adguardhome/work -v /my/own/confdir:/opt/adguardhome/conf -p 53:53/tcp -p 53:53/udp -p 67:67/udp -p 68:68/tcp -p 68:68/udp -p 80:80/tcp -p 443:443/tcp -p 853:853/tcp -p 3000:3000/tcp -d adguard/adguardhome</code></pre></li></ul><ul><li>附加配置</li></ul><p>第一次执行时，AdGuardHome.yaml将创建一个名为的文件，并在其中写入默认值。您可以在AdGuard Home容器未运行时修改文件。否则，对文件的任何更改都将丢失，因为正在运行的程序将覆盖它们。</p><p>设置以YAML格式存储，此页面列出了您可以配置的可能参数。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Proxmox 安装Docker</title>
+    <link href="/2020/04/06/Proxmox%20%E5%AE%89%E8%A3%85Docker/"/>
+    <url>/2020/04/06/Proxmox%20%E5%AE%89%E8%A3%85Docker/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Proxmox-安装Docker"><a href="#Proxmox-安装Docker" class="headerlink" title="Proxmox 安装Docker"></a>Proxmox 安装Docker</h2><pre><code>apt-get install curl -ycurl -sSL https://get.docker.com/ | sh</code></pre><h1 id="Aliyun-国内用"><a href="#Aliyun-国内用" class="headerlink" title="Aliyun  国内用"></a>Aliyun  国内用</h1><pre><code>curl -sSL https://get.docker.com/ &gt; docker.shsh docker.sh --mirror Aliyun</code></pre><p>安装图形管理</p><pre><code>docker run -d -p 8007:9000 \-v /var/run/docker.sock:/var/run/docker.sock --name ui --restart=always lihaixin/portainer:me</code></pre><pre><code>docker run -d -p 8007:9000 \-v /var/run/docker.sock:/var/run/docker.sock \--name ui --restart=always portainer/portainer</code></pre><h2 id="Docker并可视化portainer"><a href="#Docker并可视化portainer" class="headerlink" title="Docker并可视化portainer"></a>Docker并可视化portainer</h2><p>一、在docker中查询portainer</p><pre><code># docker search portainer</code></pre><p><img src="http://yanxuan.nosdn.127.net/ad370dcff906aa03f192819030388e04.png" srcset="/img/loading.gif" alt="11.png"></p><p> 二、下载portainer</p><pre><code>  # docker pull portainer/portainer</code></pre><p>三、运行portainer</p><p>　　<img src="http://yanxuan.nosdn.127.net/f05a05ded15035dac459476a8785b23f.png" srcset="/img/loading.gif" alt="12.png"></p><p> 　　列出所有在运行的容器信息。</p><p>　　# docker ps</p><p><img src="http://yanxuan.nosdn.127.net/987ea90a70418722a7e0d40919b6b565.png" srcset="/img/loading.gif" alt="13.png"></p><p> 四、打开ui界面</p><p>　　1.查询本机ip</p><p>　　# ip addr</p><p><img src="http://yanxuan.nosdn.127.net/6a4cd24425df044c0b9dfd3e369aa08a.png" srcset="/img/loading.gif" alt="14.png"></p><p> 　　2.在浏览器中输入 192.168.19.130:9000</p><p>首次登陆需要注册用户，给admin用户设置密码：</p><p><img src="http://yanxuan.nosdn.127.net/c05de1882977a36e04f47eef86f7796a.png" srcset="/img/loading.gif" alt="15.png"></p><p> 单机版本</p><p><img src="http://yanxuan.nosdn.127.net/3376244eb5b24456b34ce8f4a63be66c.png" srcset="/img/loading.gif" alt="16.png"><br>然后就可以进入主界面了，虽然是英语，但是可以借助翻译让其变成中文界面<br><img src="http://yanxuan.nosdn.127.net/e043b8b10c5750f8ba241b6293a250a0.png" srcset="/img/loading.gif" alt="17.png"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Proxmox VE web 界面添加硬件温度显示</title>
+    <link href="/2020/04/06/Proxmox%20VE%20web%20%E7%95%8C%E9%9D%A2%E6%B7%BB%E5%8A%A0%E7%A1%AC%E4%BB%B6%E6%B8%A9%E5%BA%A6%E6%98%BE%E7%A4%BA/"/>
+    <url>/2020/04/06/Proxmox%20VE%20web%20%E7%95%8C%E9%9D%A2%E6%B7%BB%E5%8A%A0%E7%A1%AC%E4%BB%B6%E6%B8%A9%E5%BA%A6%E6%98%BE%E7%A4%BA/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Proxmox-VE-web-界面添加硬件温度显示"><a href="#Proxmox-VE-web-界面添加硬件温度显示" class="headerlink" title="Proxmox VE web 界面添加硬件温度显示"></a>Proxmox VE web 界面添加硬件温度显示</h2><p>1 安装温度检测工具<br>1.1 CPU 及主板温度检测：lm-sensors<br>1.2 硬盘温度检测：hddtemp<br>2 编辑 PVE web 服务文件<br>2.1 Nodes.pm<br>2.2 pvemanagerlib.js<br>2.3 修改页面样式以完整显示数据<br>2.4 添加显示内容<br>3 完成<br>安装温度检测工具<br>CPU 及主板温度检测：lm-sensors<br>root@pve:~# <code>apt install lm-sensors</code></p><p>安装完成后执行 sensors-detect 进行传感器探测，通常情况下全部默认选择 yes 即可</p><p>探测完成后执行 sensors 测试传感器</p><pre><code>root@pve:~# sensorsacpitz-acpi-0Adapter: ACPI interfacetemp1:        +56.0°C  (crit = +120.0°C)coretemp-isa-0000Adapter: ISA adapterPackage id 0:  +57.0°C  (high = +84.0°C, crit = +100.0°C)Core 0:        +57.0°C  (high = +84.0°C, crit = +100.0°C)Core 1:        +55.0°C  (high = +84.0°C, crit = +100.0°C)Core 2:        +52.0°C  (high = +84.0°C, crit = +100.0°C)Core 3:        +54.0°C  (high = +84.0°C, crit = +100.0°C)</code></pre><p>在如上输出中，“acpitz-acpi-0” 是主板温度，“coretemp-isa-0000” 是 CPU 温度</p><p>硬盘温度检测：hddtemp<br>root@pve:~# <code>apt install hddtemp</code></p><p>安装完成后执行 hddtemp /dev/sd? 测试传感器</p><pre><code>root@pve:~# hddtemp /dev/sd?/dev/sda: WDC WD40EZRZ-00WN9B0: 29°C/dev/sdb: ADATA SP600: 26°C/dev/sdc: WD2500: 29°C/dev/sdd: ADATA SP900: 38°C</code></pre><p>由于 PVE 的 web 服务以用户 www-data 身份运行，需要修改 hddtemp 的权限</p><p>root@pve:~# <code>chmod +s /usr/sbin/hddtemp</code></p><p>编辑 PVE web 服务文件<br>#Nodes.pm<br>编辑文件 /usr/share/perl5/PVE/API2/Nodes.pm，跳转到 my $dinfo = df(‘/‘, 1); 位置，编辑成如下所示</p><pre><code># ...[OMITTED]...        $res-&gt;{pveversion} = PVE::pvecfg::package() . &quot;/&quot; .            PVE::pvecfg::version_text();        $res-&gt;{temperatures} = `sensors`;  # 添加此行以获取 CPU 与主板温度        $res-&gt;{hdd_temperatures} = `hddtemp /dev/sd?`;  # 添加此行以获取硬盘温度        my $dinfo = df(&#39;/&#39;, 1);     # output is bytes# ...[OMITTED]...</code></pre><p>pvemanagerlib.js<br>修改页面样式以完整显示数据<br>编辑文件 /usr/share/pve-manager/js/pvemanagerlib.js，跳转到 gettext(‘Status’) + ‘: ‘ + zpool, 位置，编辑成如下所示</p><pre><code>// ...[OMITTED]... var win = Ext.create(&#39;Ext.window.Window&#39;, {            modal: true,            width: 800,            height: 500,  // 原始值为 400            resizable: true,            layout: &#39;fit&#39;,            title: gettext(&#39;Status&#39;) + &#39;: &#39; + zpool,            items:[{// ...[OMITTED]...</code></pre><p>跳转到 widget.pveNodeStatus 位置，编辑成如下所示</p><pre><code>// ...[OMITTED]...Ext.define(&#39;PVE.node.StatusView&#39;, {    extend: &#39;PVE.panel.StatusView&#39;,    alias: &#39;widget.pveNodeStatus&#39;,    height: 400,  // 原始值为 300    bodyPadding: &#39;20 15 20 15&#39;,    layout: {// ...[OMITTED]...</code></pre><p>两处 height 的值需按情况修改，每多一行数据增加 20</p><p>如有一行 CPU 与主板温度数据、三行硬盘温度数据（3 块硬盘），即为 480 与 380</p><p>添加显示内容<br>跳转到 PVE Manager Version 位置，编辑成如下所示</p><pre><code>// ...[OMITTED]...        {            itemId: &#39;version&#39;,            colspan: 2,            printBar: false,            title: gettext(&#39;PVE Manager Version&#39;),            textField: &#39;pveversion&#39;,            value: &#39;&#39;        },  // 注意添加逗号        {            itemId: &#39;temperatures&#39;,            colspan: 2,            printBar: false,            title: gettext(&#39;CPU 温度&#39;),            textField: &#39;temperatures&#39;,            renderer: function (value) {                const p0 = value.match(/Package id 0.*?\+([\d\.]+)?/)[1];                const b0 = value.match(/temp1.*?\+([\d\.]+)?/)[1];                const c0 = value.match(/Core 0.*?\+([\d\.]+)?/)[1];                const c1 = value.match(/Core 1.*?\+([\d\.]+)?/)[1];                const c2 = value.match(/Core 2.*?\+([\d\.]+)?/)[1];                const c3 = value.match(/Core 3.*?\+([\d\.]+)?/)[1];                return `CPU: ${p0}°C (${c0}°C, ${c1}°C, ${c2}°C, ${c3}°C) | Board: ${b0}°C`            }        },        {            itemId: &#39;hdd-temperatures&#39;,            colspan: 2,            printBar: false,            title: gettext(&#39;HDD 温度&#39;),            textField: &#39;hdd_temperatures&#39;,            renderer: function (value) {                value = value.replace(/Â/g, &#39;&#39;);  //                return value.replace(/\n/g, &#39;&lt;br&gt;&#39;)            }        }    ],// ...[OMITTED]...</code></pre><p>renderer 中获取数据的正则与返回值需按情况修改</p><p>完成<br>执行 systemctl restart pveproxy 重启 PVE web 服务</p><p>在浏览器中清除 PVE 控制台的缓存，重新加载即可在节点概要显示温度信息</p><p>如果硬盘温度信息中出现 “Â” 字符，可能是某处编码设置有问题，可在 pvemanagerlib.js 的 renderer 函数开头添加 value = value.replace(/Â/g, ‘’);</p><p>[TOC]</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Proxmox 安装Docker并可视化portainer</title>
+    <link href="/2020/04/02/Proxmox%20%E5%AE%89%E8%A3%85Docker%E5%B9%B6%E5%8F%AF%E8%A7%86%E5%8C%96portainer/"/>
+    <url>/2020/04/02/Proxmox%20%E5%AE%89%E8%A3%85Docker%E5%B9%B6%E5%8F%AF%E8%A7%86%E5%8C%96portainer/</url>
+    
+    <content type="html"><![CDATA[<p>Proxmox 安装Docker并可视化portainer</p><h2 id="Proxmox-安装Docker"><a href="#Proxmox-安装Docker" class="headerlink" title="Proxmox 安装Docker"></a>Proxmox 安装Docker</h2><p>apt-get install curl -y<br>curl -sSL <a href="https://get.docker.com/" target="_blank" rel="noopener">https://get.docker.com/</a> | sh</p><h1 id="Aliyun-国内用"><a href="#Aliyun-国内用" class="headerlink" title="Aliyun  国内用"></a>Aliyun  国内用</h1><p>curl -sSL <a href="https://get.docker.com/" target="_blank" rel="noopener">https://get.docker.com/</a> &gt; docker.sh<br>sh docker.sh –mirror Aliyun</p><p>安装图形管理<br>docker run -d -p 8007:9000 <br>-v /var/run/docker.sock:/var/run/docker.sock<br>–name ui –restart=always lihaixin/portainer:me</p><p>docker run -d -p 8007:9000 <br>-v /var/run/docker.sock:/var/run/docker.sock <br>–name ui –restart=always portainer/portainer</p><h2 id="Docker并可视化portainer"><a href="#Docker并可视化portainer" class="headerlink" title="Docker并可视化portainer"></a>Docker并可视化portainer</h2><p>一、在docker中查询portainer</p><pre><code># docker search portainer</code></pre><img width="1504" height="618" src="/.top//6c40ca593bf84b158b93a313835ea768.png" srcset="/img/loading.gif"><p> 二、下载portainer</p><pre><code>  # docker pull portainer/portainer</code></pre><p>三、运行portainer</p><p>　　<img src="/.top//c2cfe3b9586b49d89373a587d493084b.png" srcset="/img/loading.gif" alt="1"></p><p> 　　列出所有在运行的容器信息。</p><p>　　# docker ps</p><p><img src="/.top//c500fe3e8cc745aba893b762250b874e.png" srcset="/img/loading.gif" alt></p><p> 四、打开ui界面</p><p>　　1.查询本机ip</p><p>　　# ip addr</p><p><img src="/.top//dff2c06d3f1d452a92e51dbc5742cf92.png" srcset="/img/loading.gif" alt></p><p> 　　2.在浏览器中输入 192.168.19.130:9000</p><p>首次登陆需要注册用户，给admin用户设置密码：</p><p><img src="/.top//3e6fad2e71e9450485511c3740edfb9c.png" srcset="/img/loading.gif" alt></p><p> 单机版本</p><p><img src="/.top//3c71629a904a467b8414161362e9ecc4.png" srcset="/img/loading.gif" alt></p><p> <img src="/.top//4e00f61bf03a49619d816a7444d2c6e2.png" srcset="/img/loading.gif" alt></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Proxmox VE 6.1 配置源及关闭订阅提醒</title>
+    <link href="/2020/04/02/Proxmox%20VE%206.1%20%E9%85%8D%E7%BD%AE%E6%BA%90%E5%8F%8A%E5%85%B3%E9%97%AD%E8%AE%A2%E9%98%85%E6%8F%90%E9%86%92/"/>
+    <url>/2020/04/02/Proxmox%20VE%206.1%20%E9%85%8D%E7%BD%AE%E6%BA%90%E5%8F%8A%E5%85%B3%E9%97%AD%E8%AE%A2%E9%98%85%E6%8F%90%E9%86%92/</url>
+    
+    <content type="html"><![CDATA[<p>Proxmox VE 6.1 配置源及关闭订阅提醒</p><h2 id="Proxmox-VE-6-1-配置源及关闭订阅提醒"><a href="#Proxmox-VE-6-1-配置源及关闭订阅提醒" class="headerlink" title="Proxmox VE 6.1 配置源及关闭订阅提醒"></a>Proxmox VE 6.1 配置源及关闭订阅提醒</h2><p>更新debian国内加速及pve非订阅版更新源<br>打开</p><p>nano /etc/apt/sources.list<br>修改为</p><pre><code>#deb http://ftp.debian.org/debian buster main contrib#deb http://ftp.debian.org/debian buster-updates main contrib# security updates#deb http://security.debian.org buster/updates main contrib# debian aliyun sourcedeb https://mirrors.aliyun.com/debian buster main contrib non-freedeb https://mirrors.aliyun.com/debian buster-updates main contrib non-freedeb https://mirrors.aliyun.com/debian-security buster/updates main contrib non-free# proxmox source# deb http://mirrors.ustc.edu.cn/proxmox/debian/pve buster pve-no-subscriptiondeb http://download.proxmox.com/debian/pve buster pve-no-subscription</code></pre><p>关闭订阅提醒<br>关闭企业版更新源</p><pre><code>mv /etc/apt/sources.list.d/pve-enterprise.list   /etc/apt/sources.list.d/pve-enterprise.list.bak</code></pre><p>第一种</p><pre><code>vim /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js搜索 if (data.status !== &#39;Active&#39;)修改Ext.Msg.show(...    改为Ext.Msg.noshow(...</code></pre><p>第二种</p><pre><code>vim /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js搜索 if (data.status !== &#39;Active&#39;)修改为 if (false)</code></pre><p>第三种        方法貌似不好用</p><pre><code>sed -i_orig &quot;s/data.status !== &#39;Active&#39;/false/g&quot; /usr/share/pve-manager/js/pvemanagerlib.js</code></pre><p>重要   —-<br>Debian系统源(PVE6)</p><p>nano /etc/apt/sources.list</p><pre><code>#deb http://deb.debian.org/debian buster main contribdeb http://mirrors.163.com/debian buster main contrib#deb http://deb.debian.org/debian buster-updates main contribdeb http://mirrors.163.com/debian buster-updates main contrib# security updates#deb http://security.debian.org buster/updates main contribdeb http://mirrors.163.com/debian-security buster/updates main contrib</code></pre><p>Proxmox源(PVE6)</p><p>nano /etc/apt/sources.list.d/pve-enterprise.list </p><pre><code>#deb https://enterprise.proxmox.com/debian/pve buster pve-enterprise#deb http://download.proxmox.com/debian/pve buster pve-no-subscriptiondeb http://mirrors.ustc.edu.cn/proxmox/debian/pve buster pve-no-subscription</code></pre><p>Ceph源(PVE6)</p><pre><code>nano /etc/apt/sources.list.d/ceph.list #deb http://download.proxmox.com/debian/ceph-nautilus buster maindeb http://mirrors.ustc.edu.cn/proxmox/debian/ceph-nautilus buster main</code></pre>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="/2020/04/02/hello-world/"/>
+    <url>/2020/04/02/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>Hello World</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
